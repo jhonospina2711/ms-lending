@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 3001:3001
     depends_on:
       - postgres
     env_file:
@@ -14,7 +14,7 @@ services:
 
   postgres:
     image: postgres:12
-    container_name: postgres
+    container_name: postgreslending
     restart: always
     ports:
       - 5432:5432
@@ -25,4 +25,4 @@ services:
 
 volumes:
   postgres:
-    name: nest-db
+    name: lending
