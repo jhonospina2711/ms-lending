@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { createTarget } from './dtos/createTarget.dto';
+import { createTargetDto } from './dtos/createTarget.dto';
 import {
   ERROR_CREATE_TARGET,
   ERROR_GET_ALL_TARGET,
@@ -9,14 +9,14 @@ import {
 } from 'src/common/constans/string';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { success } from 'src/common/httpResponse.interface';
-import { updateTarget } from './dtos/updateTarget.dto';
-import { Prisma } from '@prisma/client';
+import { updateTargetDto } from './dtos/updateTarget.dto';
+import { Target } from '@prisma/client';
 
 @Injectable()
 export class TargetService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createTarget(target: createTarget): Promise<{
+  async createTarget(target: createTargetDto): Promise<{
     success: boolean;
     data: any;
   }> {
@@ -36,7 +36,7 @@ export class TargetService {
 
   async updateTarget(
     target: string,
-    payload: updateTarget,
+    payload: updateTargetDto,
   ): Promise<
     | {
         success: boolean;
@@ -88,7 +88,20 @@ export class TargetService {
     }
   }
 
-  async getDataUpdateTarget(payload: updateTarget): Promise<any> {
+  async findOneTargetReturnAll(name: string): Promise<Target> {
+    try {
+      const findOneTarget = await this.prismaService.target.findUnique({
+        where: {
+          name: name,
+        },
+      });
+      return findOneTarget;
+    } catch (error) {
+      throw new BadRequestException(ERROR_GET_ID_TARGET);
+    }
+  }
+
+  async getDataUpdateTarget(payload: updateTargetDto): Promise<any> {
     try {
       const {
         name,
@@ -99,7 +112,6 @@ export class TargetService {
         rate,
         max,
       } = payload;
-      console.log(payload);
       let data = {};
       if (name != undefined) {
         data = {
