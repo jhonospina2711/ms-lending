@@ -9,8 +9,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { createTarget } from './dtos/createTarget.dto';
-import { updateTarget } from './dtos/updateTarget.dto';
+import { createTargetDto } from './dtos/createTarget.dto';
+import { updateTargetDto } from './dtos/updateTarget.dto';
 import { TargetService } from './target.service';
 
 @ApiTags('Target')
@@ -20,7 +20,7 @@ export class TargetController {
 
   @Post('newTarget')
   @ApiBody({
-    type: createTarget,
+    type: createTargetDto,
     examples: {
       one: {
         summary: 'Ejemplo Json registrar nuevo target',
@@ -44,7 +44,7 @@ export class TargetController {
     summary: 'Api para insertar nuevo target',
     description: 'Inserta en base de datos un nuevo target',
   })
-  async createTarget(@Body() payload: createTarget): Promise<{
+  async createTarget(@Body() payload: createTargetDto): Promise<{
     success: boolean;
     data: any;
   }> {
@@ -57,7 +57,7 @@ export class TargetController {
 
   @Put(':name')
   @ApiBody({
-    type: updateTarget,
+    type: updateTargetDto,
     examples: {
       one: {
         summary: 'Ejemplo Json actualización de un target',
@@ -83,7 +83,7 @@ export class TargetController {
   })
   async updateTarget(
     @Param('name') name: string,
-    @Body() payload: updateTarget,
+    @Body() payload: updateTargetDto,
   ): Promise<
     | BadRequestException
     | {

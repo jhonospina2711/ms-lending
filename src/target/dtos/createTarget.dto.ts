@@ -6,7 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class createTarget {
+export class createTargetDto {
   @IsString()
   @IsNotEmpty()
   readonly name: string;

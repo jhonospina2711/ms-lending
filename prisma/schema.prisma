@@ -49,6 +49,7 @@ model Loan {
   user_id             Int
   amount              Decimal?      @db.Money
   term                Int?          @db.Integer
+  rate                Float         @db.DoublePrecision
   date                DateTime      @db.Timestamptz(3)
   installment         Decimal?      @db.Money
   relationTarget      Target        @relation(fields: [target_id], references: [id])

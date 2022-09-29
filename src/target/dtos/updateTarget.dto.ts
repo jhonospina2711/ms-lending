@@ -1,12 +1,6 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsString,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
-export class updateTarget {
+export class updateTargetDto {
   // @IsNumber()
   // @IsNotEmpty()
   // readonly id: string;
