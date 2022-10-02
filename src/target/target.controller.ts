@@ -108,7 +108,7 @@ export class TargetController {
     data: any;
   }> {
     try {
-      return this.targetService.findAll();
+      return await this.targetService.findAll();
     } catch (error) {
       throw new HttpException(`Se presentoel siguiente error: ${error}`, 400);
     }

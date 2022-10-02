@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Loan } from '@prisma/client';
+import { Loan, Target } from '@prisma/client';
 import {
   ERROR_AMOUNT_LOAN,
   ERROR_AMOUNT_TOTAL,
@@ -205,6 +205,52 @@ export class LoanService {
       return false;
     } catch (error) {
       throw new BadRequestException(ERROR_GET_USER);
+    }
+  }
+
+  async getListLoan(from: Date, to: Date) {
+    try {
+      // const lte = new Date(from).toISOString();
+      // console.log(lte);
+      // const gte = new Date(to).toISOString();
+      // console.log(gte);
+
+      const listLoan = await this.prismaService.loan.findMany({
+        where: {
+          date: {
+            gte: new Date(from).toISOString(),
+            lte: new Date(to).toISOString(),
+          },
+        },
+        select: {
+          id: true,
+          amount: true,
+          term: true,
+          rate: true,
+          user_id: true,
+          relationTarget: {
+            select: {
+              name: true,
+            },
+          },
+          date: true,
+        },
+      });
+      let response = [];
+      response = listLoan.map((data) => {
+        const target = Object.assign({}, data);
+        target['target'] = data.relationTarget.name;
+        delete target.relationTarget;
+        const date = new Date(target.date.setHours(target.date.getHours() - 5));
+        delete target.date;
+        target['date'] = date;
+        return target;
+      });
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(ERROR_GET_INSTALLMENT);
     }
   }
 }
