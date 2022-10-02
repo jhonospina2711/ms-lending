@@ -21,14 +21,14 @@ model User {
   email           String          @unique
   cel_phone       String          @unique
   birth_date      DateTime?       @db.Date
-  loan            Loan[]
+  loans           Loan[]
 }
 
 model documentType {
   id              Int             @id @default(autoincrement())
   type            String          @unique @db.Char(4)
   name            String          @db.VarChar(200)
-  user            User[]
+  users           User[]
 }
 
 model Target {
@@ -40,7 +40,7 @@ model Target {
   max_amount_total    Decimal?      @db.Money
   rate                Float         @db.DoublePrecision
   max                 Decimal?      @db.Money   
-  loan                Loan[]             
+  loans               Loan[]             
 }
 
 model Loan {
@@ -54,7 +54,7 @@ model Loan {
   installment         Decimal?      @db.Money
   relationTarget      Target        @relation(fields: [target_id], references: [id])
   target_id           Int
-  payment             Payment[]    
+  payments            Payment[]    
 }
 
 model Payment {
