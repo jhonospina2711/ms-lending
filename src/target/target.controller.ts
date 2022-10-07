@@ -45,7 +45,7 @@ export class TargetController {
     description: 'Inserta en base de datos un nuevo target',
   })
   async createTarget(@Body() payload: createTargetDto): Promise<{
-    success: boolean;
+    status: boolean;
     data: any;
   }> {
     try {
@@ -87,7 +87,7 @@ export class TargetController {
   ): Promise<
     | BadRequestException
     | {
-        success: boolean;
+        status: boolean;
         data: any;
       }
   > {
@@ -104,7 +104,7 @@ export class TargetController {
     description: 'Obtiene de BD el listado de todos los target',
   })
   async getAllTarget(): Promise<{
-    success: boolean;
+    status: boolean;
     data: any;
   }> {
     try {

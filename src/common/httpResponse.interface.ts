@@ -1,6 +1,13 @@
-export const success = (data: any, result: boolean) => {
+export const responseSuccess = (data: any, result: boolean) => {
   return {
-    success: result,
+    status: result,
     data: data,
+  };
+};
+
+export const responseError = (message: string, result: boolean) => {
+  return {
+    status: result,
+    message: message,
   };
 };

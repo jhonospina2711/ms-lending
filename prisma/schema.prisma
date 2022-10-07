@@ -61,7 +61,9 @@ model Payment {
   id                  Int           @id @default(autoincrement())
   relationLoan        Loan          @relation(fields: [loan_id], references: [id])
   loan_id             Int
+  installment         Decimal?      @db.Money
   amount              Decimal?      @db.Money
   debt                Decimal?      @db.Money
   date                DateTime      @db.Timestamptz(3)
+  
 }
