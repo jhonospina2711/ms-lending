@@ -6,6 +6,7 @@ import { LoanModule } from './loan/loan.module';
 import { PaymentModule } from './payment/payment.module';
 import { PrismaModule } from '../libs/prisma/src/prisma.module';
 import { TargetModule } from './target/target.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +17,7 @@ import { TargetModule } from './target/target.module';
     TargetModule,
     LoanModule,
     PaymentModule,
+    UserModule,
   ],
   controllers: [],
   providers: [{ provide: APP_INTERCEPTOR, useClass: TransformInterceptor }],
