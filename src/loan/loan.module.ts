@@ -8,5 +8,6 @@ import { TargetModule } from 'src/target/target.module';
   imports: [PrismaModule, TargetModule],
   providers: [LoanService],
   controllers: [LoanController],
+  exports: [LoanService],
 })
 export class LoanModule {}

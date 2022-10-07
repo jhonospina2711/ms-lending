@@ -8,7 +8,7 @@ import {
   ERROR_UPDATE_TARGET,
 } from 'src/common/constans/string';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { success } from 'src/common/httpResponse.interface';
+import { responseSuccess } from '../common/httpResponse.interface';
 import { updateTargetDto } from './dtos/updateTarget.dto';
 import { Target } from '@prisma/client';
 
@@ -17,7 +17,7 @@ export class TargetService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createTarget(target: createTargetDto): Promise<{
-    success: boolean;
+    status: boolean;
     data: any;
   }> {
     try {
@@ -28,7 +28,7 @@ export class TargetService {
         success: true,
         data: `Se inserto el target ${confTarget.name}`,
       };
-      return success(response.data, response.success);
+      return responseSuccess(response.data, response.success);
     } catch (error) {
       throw new BadRequestException(ERROR_CREATE_TARGET);
     }
@@ -39,7 +39,7 @@ export class TargetService {
     payload: updateTargetDto,
   ): Promise<
     | {
-        success: boolean;
+        status: boolean;
         data: any;
       }
     | BadRequestException
@@ -55,11 +55,11 @@ export class TargetService {
           data,
         });
         const response = {
-          success: true,
+          status: true,
           data: `Se actualizo el target ${target}`,
         };
         if (updatedTarget.count === 1) {
-          return success(response.data, response.success);
+          return responseSuccess(response.data, response.status);
         }
       }
       return new BadRequestException(
@@ -162,16 +162,16 @@ export class TargetService {
   }
 
   async findAll(): Promise<{
-    success: boolean;
+    status: boolean;
     data: any;
   }> {
     try {
       const findAllTarget = await this.prismaService.target.findMany();
       const response = {
-        success: true,
+        status: true,
         data: findAllTarget,
       };
-      return success(response.data, response.success);
+      return responseSuccess(response.data, response.status);
     } catch (error) {
       throw new BadRequestException(ERROR_GET_ALL_TARGET);
     }

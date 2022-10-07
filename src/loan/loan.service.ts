@@ -8,11 +8,12 @@ import {
   ERROR_GET_USER,
   ERROR_LOAN_APPLICATION,
   ERROR_SAVE_LOAN,
-} from 'src/common/constans/string';
-import { success } from 'src/common/httpResponse.interface';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { TargetService } from 'src/target/target.service';
+} from '../common/constans/string';
+import { responseSuccess } from 'src/common/httpResponse.interface';
+import { PrismaService } from '../prisma/prisma.service';
+import { TargetService } from '../target/target.service';
 import { loanApplicationDto } from './dtos/loanApplication.dto';
+import { loan } from '../loan/interface/';
 
 @Injectable()
 export class LoanService {
@@ -20,14 +21,24 @@ export class LoanService {
     private readonly prismaService: PrismaService,
     private readonly targetService: TargetService,
   ) {}
-  async loanApplication(payload: loanApplicationDto) {
+  async loanApplication(payload: loanApplicationDto): Promise<
+    | BadRequestException
+    | {
+        status: boolean;
+        data: any;
+      }
+  > {
     try {
       const { amount, term, user_id } = payload;
       const existUser = await this.validateUserExist(user_id);
       if (existUser === true) {
         const target = await this.getTargetToUser(user_id);
-        const installment = await this.getInstallment(payload, target.rate);
-        const loan = {
+        const installment = await this.getInstallment(
+          amount,
+          term,
+          target.rate,
+        );
+        const loan: loan = {
           user_id: user_id,
           amount: amount,
           term: term,
@@ -36,16 +47,16 @@ export class LoanService {
           target_id: target.id,
           rate: target.rate,
         };
-        if (amount <= parseInt(target.max.toString())) {
+        if (amount <= Number(target.max)) {
           const saveLoan = await this.saveNewLoan(loan);
           const response = {
-            success: true,
+            status: true,
             data: {
               loan_id: saveLoan['id'],
               installment: saveLoan['installment'],
             },
           };
-          return success(response.data, response.success);
+          return responseSuccess(response.data, response.status);
         }
         return new BadRequestException(
           `El prestamo supera el valor maximo permitido ${target.max}`,
@@ -59,7 +70,7 @@ export class LoanService {
     }
   }
 
-  async saveNewLoan(loan): Promise<Loan | BadRequestException> {
+  async saveNewLoan(loan: loan): Promise<Loan | BadRequestException> {
     try {
       const saveLoan = await this.prismaService.loan.create({
         data: loan,
@@ -75,7 +86,7 @@ export class LoanService {
     }
   }
 
-  async getTargetToUser(user_id: number) {
+  async getTargetToUser(user_id: number): Promise<Target> {
     try {
       //TODO: suma la cantidad de prestamos por usuario en el ultimo año
       let amountLoan = await this.amountLoanBylatestYear(user_id);
@@ -172,16 +183,21 @@ export class LoanService {
     }
   }
 
-  async getInstallment(payload: loanApplicationDto, rate): Promise<number> {
+  async getInstallment(
+    amount: number,
+    term: number,
+    rate: number,
+  ): Promise<number> {
     try {
-      const { amount, term } = payload;
-      const interesMV = parseFloat((rate / 12).toPrecision(3));
+      const interesMV = Number(parseFloat((rate / 12).toFixed(2)));
       // eslint-disable-next-line prettier/prettier
-      const installment = parseFloat(
-        (
-          (interesMV + interesMV / ((1 + interesMV) ** term - 1)) *
-          amount
-        ).toPrecision(5),
+      const installment = Number(
+        parseFloat(
+          (
+            (interesMV + interesMV / ((1 + interesMV) ** term - 1)) *
+            amount
+          ).toFixed(2),
+        ),
       );
       return installment;
     } catch (error) {
@@ -189,7 +205,7 @@ export class LoanService {
     }
   }
 
-  async validateUserExist(user_id): Promise<boolean> {
+  async validateUserExist(user_id: number): Promise<boolean> {
     try {
       const document = await this.prismaService.user.findUnique({
         where: {
@@ -208,13 +224,8 @@ export class LoanService {
     }
   }
 
-  async getListLoan(from: Date, to: Date) {
+  async getListLoan(from: Date, to: Date): Promise<any[]> {
     try {
-      // const lte = new Date(from).toISOString();
-      // console.log(lte);
-      // const gte = new Date(to).toISOString();
-      // console.log(gte);
-
       const listLoan = await this.prismaService.loan.findMany({
         where: {
           date: {
@@ -246,7 +257,6 @@ export class LoanService {
         target['date'] = date;
         return target;
       });
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
