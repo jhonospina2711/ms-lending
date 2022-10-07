@@ -14,7 +14,7 @@ services:
 
   postgres:
     image: postgres:12
-    container_name: postgreslending
+    container_name: postgresloan
     restart: always
     ports:
       - 5432:5432
@@ -25,4 +25,4 @@ services:
 
 volumes:
   postgres:
-    name: lending
+    name: loan

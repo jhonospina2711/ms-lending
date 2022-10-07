@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { LoanService } from './loan.service';
 import { LoanController } from './loan.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
 import { TargetModule } from 'src/target/target.module';
+import { PrismaModule } from '../../libs/prisma/src/prisma.module';
 
 @Module({
   imports: [PrismaModule, TargetModule],

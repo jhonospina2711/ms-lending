@@ -7,7 +7,7 @@ import {
   ERROR_GET_ID_TARGET,
   ERROR_UPDATE_TARGET,
 } from 'src/common/constans/string';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../libs/prisma/src/prisma.service';
 import { responseSuccess } from '../common/httpResponse.interface';
 import { updateTargetDto } from './dtos/updateTarget.dto';
 import { Target } from '@prisma/client';

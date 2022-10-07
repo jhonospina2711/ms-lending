@@ -4,7 +4,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './core/interceptors/transform.interceptor';
 import { LoanModule } from './loan/loan.module';
 import { PaymentModule } from './payment/payment.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from '../libs/prisma/src/prisma.module';
 import { TargetModule } from './target/target.module';
 @Module({
   imports: [

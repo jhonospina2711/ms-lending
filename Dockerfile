@@ -13,7 +13,8 @@ RUN npm install
 # Generate prisma client, leave out if generating in `postinstall` script
 RUN npx prisma generate
 # Crear la migracion de la BD
-#RUN npx prisma migrate dev
+# RUN prisma migrate deploy
+# RUN npx prisma db seed
 
 COPY . .
 
