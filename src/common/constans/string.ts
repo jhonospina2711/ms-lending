@@ -13,3 +13,4 @@ export const ERROR_AMOUNT_LOAN = 'Error obteniendo la cantidad de prestamos en e
 // eslint-disable-next-line prettier/prettier
 export const ERROR_AMOUNT_TOTAL = 'Error obteninedo el total de prestamos en el ultimo año';
 export const ERROR_SAVE_PAYMENT = 'Error guardando pago en BD';
+export const ERROR_SAVE_USER = 'Error guardando el usuario en BD';

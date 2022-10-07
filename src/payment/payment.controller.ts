@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { registerPaymentDto } from './dtos/registerPaymentDto';
 import { PaymentService } from './payment.service';
@@ -26,6 +26,10 @@ export class PaymentController {
     description: 'Esta api permite el registro en base de datos de un pago',
   })
   async registerPayment(@Body() payload: registerPaymentDto) {
-    return await this.paymentService.registerPayment(payload);
+    try {
+      return await this.paymentService.registerPayment(payload);
+    } catch (error) {
+      throw new HttpException(`Se presento el siguiente error: ${error}`, 400);
+    }
   }
 }
