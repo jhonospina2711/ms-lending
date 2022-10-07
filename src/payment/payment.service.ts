@@ -5,7 +5,7 @@ import {
   responseError,
   responseSuccess,
 } from '../common/httpResponse.interface';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../libs/prisma/src/prisma.service';
 import { registerPaymentDto } from './dtos/registerPaymentDto';
 import { payment } from '../payment/interface';
 

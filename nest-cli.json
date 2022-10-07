@@ -5,6 +5,18 @@
   "compilerOptions": {
     "plugins": [
       "@nestjs/swagger"
-    ]
+    ],
+    "webpack": true
+  },
+  "projects": {
+    "prisma": {
+      "type": "library",
+      "root": "libs/prisma",
+      "entryFile": "index",
+      "sourceRoot": "libs/prisma/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+      }
+    }
   }
 }

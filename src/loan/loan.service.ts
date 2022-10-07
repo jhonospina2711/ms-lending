@@ -10,7 +10,7 @@ import {
   ERROR_SAVE_LOAN,
 } from '../common/constans/string';
 import { responseSuccess } from 'src/common/httpResponse.interface';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../libs/prisma/src/prisma.service';
 import { TargetService } from '../target/target.service';
 import { loanApplicationDto } from './dtos/loanApplication.dto';
 import { loan } from '../loan/interface/';
